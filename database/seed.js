@@ -1,6 +1,6 @@
-// Import database and model
 
-// Seed data
+const { sequelize, Track } = require('./setup');
+
 const sampleTracks = [
   {
     songTitle: "Bohemian Rhapsody",
@@ -100,4 +100,20 @@ const sampleTracks = [
   }
 ];
 
-// Seed database with sample data
+async function seedDatabase() {
+  try {
+    await sequelize.authenticate();
+    console.log('Database connection established.');
+
+    await Track.bulkCreate(sampleTracks);
+    console.log('Successfully added 12 sample tracks.');
+
+  } catch (error) {
+    console.error('Error seeding database:', error);
+  } finally {
+    await sequelize.close();
+    console.log('Database connection closed.');
+  }
+}
+
+seedDatabase();
